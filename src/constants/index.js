@@ -5,7 +5,7 @@ import {
   support,
   truckFast,
   twitter,
-} from "../../../../src/assets/icons";
+} from "../assets/icons";
 import {
   bigShoe1,
   bigShoe2,

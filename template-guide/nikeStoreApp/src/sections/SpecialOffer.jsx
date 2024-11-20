@@ -1,4 +1,4 @@
-import { arrowRight } from "../assets/icons";
+import { arrowRight } from "../../../../src/assets/icons";
 import { offer } from "../assets/images";
 import { Button } from "../components";
 

@@ -1,81 +1,109 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { logo, gif } from "../assets/data";
-import { FaShoppingCart, FaTimes } from "react-icons/fa";
+import { FaShoppingCart, FaTimes, FaArrowLeft } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { GiHamburgerMenu } from "react-icons/gi";
 
 const Navbar = () => {
   const cart = useSelector((state) => state.cart);
-
   const [click, setClick] = useState(false);
-  const mobile = () => {
+  const navigate = useNavigate(); // Hook to access the navigate function
+
+  const toggleMobileMenu = () => {
     setClick(!click);
   };
 
-  return (
-    <div className="p-1 md:p-4 flex items-center justify-between h-10 w-full">
-      <div className="flex flex-row items-center gap-2">
-        <img src={logo} alt="" height={50} width={50} className="dark:hidden" />
-        <img
-          src={gif}
-          alt=""
-          height={20}
-          width={20}
-          className="hidden dark:block"
-        />
-        <span className="text-2xl font-[1000] text-center dark:text-white">
-          SNKR.
-          <span className="font-extrabold text-sm">hub</span>
-        </span>
-      </div>
+  const handleBack = () => {
+    navigate(-1); // Go back to the previous page in history
+  };
 
-      <ul className="hidden md:flex text-sm  text-black dark:text-white font-semibold md:tracking-wide  flex-col  gap-2 md:flex-row  md:gap-8">
-        <li>
-          <Link to="/">Home</Link>
-        </li>
-        <li>
-          <Link to="/explore">Explore</Link>
-        </li>
-        <li>
-          <Link to="/cart">
-            <div className="relative">
-              <FaShoppingCart className="text-xl " />
+  return (
+    <nav className="fixed top-0 left-0 w-full bg-white/90 dark:bg-gray-900/90 shadow-md z-50 backdrop-blur-md">
+      <div className="p-4 flex items-center justify-between max-w-screen-xl mx-auto">
+        {/* Back Button */}
+        <div className="flex items-center gap-3">
+          <button
+            onClick={handleBack}
+            className="text-lg  text-gray-800 dark:text-white mr-16"
+            aria-label="Go Back"
+          >
+            <FaArrowLeft />
+          </button>
+
+          <img
+            src={logo}
+            alt="Logo"
+            height={50}
+            width={50}
+            className="dark:hidden"
+          />
+          <img
+            src={gif}
+            alt="Gif Logo"
+            height={50}
+            width={50}
+            className="hidden dark:block"
+          />
+          <span className="text-2xl font-bold text-gray-800 dark:text-white">
+            SNKR
+            <span className="font-extrabold text-sm text-green-600">hub</span>
+          </span>
+        </div>
+
+        {/* Desktop Menu */}
+        <ul className="hidden md:flex items-center gap-8 text-sm font-semibold text-gray-700 dark:text-gray-300">
+          <li className="hover:text-green-600 dark:hover:text-green-400 transition">
+            <Link to="/">Home</Link>
+          </li>
+          <li className="hover:text-green-600 dark:hover:text-green-400 transition">
+            <Link to="/explore">Explore</Link>
+          </li>
+          <li className="relative hover:text-green-600 dark:hover:text-green-400 transition">
+            <Link to="/cart">
+              <FaShoppingCart className="text-xl" />
               {cart.length > 0 && (
-                <span
-                  className="absolute -top-1 -right-2 bg-green-600 text-xs w-4 h-4 
-                  flex justify-center items-center animate-bounce rounded-full text-white"
-                >
+                <span className="absolute -top-1 -right-2 bg-green-600 text-xs w-4 h-4 flex justify-center items-center rounded-full text-white animate-bounce">
                   {cart.length}
                 </span>
               )}
-            </div>
-          </Link>
-        </li>
-      </ul>
-      {/* hidden max-sm:block */}
-      <div className="block md:hidden">
-        <button onClick={mobile}>
-          {!click && <GiHamburgerMenu className="text-2xl dark:text-white" />}
-          {click && <FaTimes className="text-2xl dark:text-white" />}
-          <ul
-            className={`text-sm ${
-              click ? "block" : "hidden"
-            } w-full flex flex-col gap-y-4 absolute top-10 left-0 right-0 text-black dark:text-white font-semibold z-10 backdrop-blur-sm`}
-          >
-            <li className=" rounded-md h-8 ">
-              <Link to="/">Home</Link>
+            </Link>
+          </li>
+        </ul>
+
+        {/* Mobile Menu Button */}
+        <div className="md:hidden">
+          <button onClick={toggleMobileMenu} aria-label="Toggle Mobile Menu">
+            {!click ? (
+              <GiHamburgerMenu className="text-2xl text-gray-800 dark:text-white" />
+            ) : (
+              <FaTimes className="text-2xl text-gray-800 dark:text-white" />
+            )}
+          </button>
+        </div>
+
+        {/* Mobile Menu */}
+        {click && (
+          <ul className="absolute top-16 left-0 right-0 bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-300 flex flex-col gap-4 p-6 shadow-lg z-40">
+            <li className="hover:text-green-600 dark:hover:text-green-400 transition">
+              <Link to="/" onClick={toggleMobileMenu}>
+                Home
+              </Link>
             </li>
-            <li className=" rounded-md h-8">
-              <Link to="/explore">Explore</Link>
+            <li className="hover:text-green-600 dark:hover:text-green-400 transition">
+              <Link to="/explore" onClick={toggleMobileMenu}>
+                Explore
+              </Link>
             </li>
-            <li className=" rounded-md h-8">
-              <Link to="/cart">Cart</Link>
+            <li className="hover:text-green-600 dark:hover:text-green-400 transition">
+              <Link to="/cart" onClick={toggleMobileMenu}>
+                Cart
+              </Link>
             </li>
           </ul>
-        </button>
+        )}
       </div>
-    </div>
+    </nav>
   );
 };
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { hamburger } from "../assets/icons";
+import { hamburger } from "../../../../src/assets/icons";
 import { headerLogo } from "../assets/images";
 import { navLinks } from "../constants";
 import SignInSignUpModal from "./SignInSignUp";
