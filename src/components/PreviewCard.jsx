@@ -92,9 +92,7 @@ const PreviewCard = ({ id }) => {
         <div className="flex justify-center">
           <img
             // src={product.imageUrl || "https://via.placeholder.com/350"}
-            src={
-              "https://github.com/lado-saha/snkr-hub/blob/master/src/assets/images/tool-box.png"
-            }
+            src={product.imageUrl || "src/assets/images/tool-box.png"}
             alt={product.name}
             className="h-[350px] w-[350px] object-cover rounded-lg"
           />
