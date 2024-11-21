@@ -1,30 +1,80 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Card from "../components/Card";
-import { data } from "../assets/data";
 import SearchBar from "../components/Searchbar";
+import {
+  getAllProducts,
+  searchProduct,
+  fetchCategories,
+  getAllProductsCount,
+} from "../api/rest-apis";
 
 const Explore = () => {
-  const sneakers = data.sneakers;
-
-  // Filter and prepare items
-  const filteredItems = sneakers.filter(
-    (s) => s.retail_price_cents !== null && s.story_html !== null
-  );
-
-  const items = filteredItems.map((item) => ({ ...item, qty: 1 }));
-
-  // Pagination state
+  const [categories, setCategories] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 8; // Adjust this to change items displayed per page
-  const totalPages = Math.ceil(items.length / itemsPerPage);
+  const [totalPages, setTotalPages] = useState(1);
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [query, setQuery] = useState("");
+  const itemsPerPage = 8;
+  const [currentProducts, setCurrentProducts] = useState([]);
 
-  // Items for the current page
-  const currentItems = items.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
+  // Fetch categories on mount
+  useEffect(() => {
+    const fetchCategoriesData = async () => {
+      try {
+        const categoriesData = await fetchCategories();
+        setCategories([{ id: "All", name: "All" }, ...categoriesData]);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+    fetchCategoriesData();
+  }, []);
 
-  // Handlers for pagination
+  // Fetch products when page, category, or query changes
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        let productsData = [];
+        if (selectedCategory === "All") {
+          productsData = await searchProduct(
+            null,
+            query,
+            itemsPerPage,
+            currentPage
+          );
+          const totalProductCount = await getAllProductsCount();
+        
+          setTotalPages(Math.ceil(totalProductCount / itemsPerPage));
+        } else {
+          const categoryId = categories.find(
+            (cat) => cat.name === selectedCategory
+          )?.id;
+          productsData = await searchProduct(
+            categoryId,
+            query,
+            itemsPerPage,
+            currentPage
+          );
+          setTotalPages(Math.ceil(productsData.total / itemsPerPage));
+        }
+        setCurrentProducts(productsData); // Use API-paginated data directly
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+
+    // Only fetch products if categories are loaded
+    if (categories.length > 0) fetchProducts();
+  }, [currentPage, selectedCategory, query, categories]);
+
+  // Handle search bar actions
+  const handleSearch = (category, productName) => {
+    setQuery(productName);
+    setSelectedCategory(category || "All");
+    setCurrentPage(1); // Reset to the first page
+  };
+
+  // Pagination handlers
   const handleNextPage = () => {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
   };
@@ -36,37 +86,16 @@ const Explore = () => {
   const handlePageSelect = (page) => {
     setCurrentPage(page);
   };
-  // const sneakers = data.sneakers;
-  const categories = ["All", "Sneakers", "Clothing", "Accessories"]; // Example categories
-
-  const [setFilteredItems] = useState(sneakers);
-
-  // Handle search by category and product name
-  const handleSearch = (category, productName) => {
-    let filtered = sneakers;
-
-    if (category && category !== "All") {
-      filtered = filtered.filter((item) => item.category === category);
-    }
-
-    if (productName) {
-      filtered = filtered.filter((item) =>
-        item.name.toLowerCase().includes(productName.toLowerCase())
-      );
-    }
-
-    setFilteredItems(filtered);
-  };
 
   return (
     <div className="p-10">
       {/* Search Bar */}
       <SearchBar categories={categories} onSearch={handleSearch} />
+
       {/* Grid of Items */}
-      {/* <div className="grid grid-cols-1 gap-y-6 md:grid-cols-2 md:gap-x-6 lg:grid-cols-3 lg:gap-8 xl:grid-cols-4 xl:gap-10 mx-auto"> */}
-      <div className="w-full min-h-fit p-10 md:p-20 grid grid-cols-1 gap-y-6 md:grid-cols-2 md:gap-x-6 lg:grid-cols-3 lg:gap-8 xl:grid-cols-4 xl:gap-10mx-auto ">
-        {currentItems.map((shoe) => (
-          <Card key={shoe.id} shoe={shoe} />
+      <div className="w-full min-h-fit p-10 md:p-20 grid grid-cols-1 gap-y-6 md:grid-cols-2 md:gap-x-6 lg:grid-cols-3 lg:gap-8 xl:grid-cols-4 mx-auto">
+        {currentProducts.map((product) => (
+          <Card key={product.id} product={product} />
         ))}
       </div>
 
@@ -83,6 +112,7 @@ const Explore = () => {
         >
           Previous
         </button>
+
         <div className="flex items-center gap-2">
           {Array.from({ length: totalPages }, (_, index) => (
             <button
@@ -98,6 +128,7 @@ const Explore = () => {
             </button>
           ))}
         </div>
+
         <button
           onClick={handleNextPage}
           disabled={currentPage === totalPages}

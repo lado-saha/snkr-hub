@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 
 const SearchBar = ({ categories, onSearch }) => {
-  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState(0);
   const [productName, setProductName] = useState("");
 
   // Handle category change
   const handleCategoryChange = (e) => {
+    console.log(e.target.value)
     setSelectedCategory(e.target.value);
   };
 
@@ -27,10 +28,9 @@ const SearchBar = ({ categories, onSearch }) => {
         onChange={handleCategoryChange}
         className="p-3 border-2 border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-sm md:text-base dark:bg-[#1f1f1f] dark:text-white dark:focus:ring-green-500"
       >
-        <option value="">Select Category</option>
         {categories.map((category, index) => (
-          <option key={index} value={category}>
-            {category}
+          <option key={index} value={category.name}>
+            {category.name}
           </option>
         ))}
       </select>

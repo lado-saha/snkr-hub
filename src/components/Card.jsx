@@ -4,23 +4,23 @@ import { addToCart, removeFromCart } from "../redux/slices/CartSlice";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 
-const Card = ({ shoe }) => {
+export const Card = ({ product }) => {
   const cart = useSelector((state) => state.cart);
-  // console.log(shoe);
-  const img = shoe.original_picture_url;
-  const price = shoe.retail_price_cents;
-  const desc = shoe.story_html;
-  const id = shoe.id;
+
+  const img =
+    "https://image.goat.com/375/attachments/product_template_pictures/images/021/321/847/original/473391_00.png"; // Adapted to Product class
+  const price = product.price; // Adapted to Product class
+  const desc = product.description; // Adapted to Product class
+  const id = product.id; // Adapted to Product class
 
   const dispatch = useDispatch();
-
   const add = () => {
-    dispatch(addToCart(shoe));
+    dispatch(addToCart(product));
     toast.success("Added to cart");
   };
 
-  const remove = (itemIdx) => {
-    dispatch(removeFromCart(itemIdx));
+  const remove = (productId) => {
+    dispatch(removeFromCart(productId));
     toast.error("Removed item from cart");
   };
 
@@ -33,25 +33,28 @@ const Card = ({ shoe }) => {
               src={img}
               width={200}
               height={200}
-              alt="shoe"
+              alt={product.name || "product"} // Fallback to "product" if no name
               className="mx-auto"
             />
             <Link to={`/preview/${id}`}>
               <button className="absolute bg-slate-600 dark:bg-slate-800 dark:font-semibold text-white text-xs p-1 top-2 right-2 rounded-md animate-pulse">
-                preview
+                Preview
               </button>
             </Link>
           </div>
-
+          <p className="text font-bold">
+            {product.name}
+          </p>
+          {/* Description */}
           <p className="text-base font-medium max-h-[96px] overflow-y-hidden">
             {desc.split(" ").slice(0, 20).join(" ") + "..."}
           </p>
 
           <div className="flex  items-center justify-between">
-            {cart.some((item) => item.id === shoe.id) ? (
+            {cart.some((item) => item.id === product.id) ? (
               <button
-                onClick={() => remove(shoe.id)}
-                className="bg-red-400 text-white p-2 rounded-md text-sm "
+                onClick={() => remove(id)}
+                className="bg-red-400 text-white p-2 rounded-md text-sm"
               >
                 Remove Item
               </button>
@@ -63,7 +66,9 @@ const Card = ({ shoe }) => {
                 Add to Cart
               </button>
             )}
-            <span className="text-xl font-semibold">₹ {price}</span>
+            <span className="text-xl font-semibold">
+              {Math.ceil((price * 100) / 100) * 100} FCFA
+            </span>
           </div>
         </div>
       </div>
