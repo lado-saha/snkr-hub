@@ -46,8 +46,8 @@ const Navbar = () => {
             className="hidden dark:block"
           />
           <span className="text-2xl font-bold text-gray-800 dark:text-white">
-            SNKR
-            <span className="font-extrabold text-sm text-green-600">hub</span>
+            Bricostore
+            <span className="font-extrabold text-sm text-green-600 ml-4">shop</span>
           </span>
         </div>
 
@@ -57,7 +57,7 @@ const Navbar = () => {
             <Link to="/">Home</Link>
           </li>
           <li className="hover:text-green-600 dark:hover:text-green-400 transition">
-            <Link to="/explore">Explore</Link>
+            <Link to="/explore">Browse Shop</Link>
           </li>
           <li className="relative hover:text-green-600 dark:hover:text-green-400 transition">
             <Link to="/cart">
@@ -92,7 +92,7 @@ const Navbar = () => {
             </li>
             <li className="hover:text-green-600 dark:hover:text-green-400 transition">
               <Link to="/explore" onClick={toggleMobileMenu}>
-                Explore
+                Browse Shop
               </Link>
             </li>
             <li className="hover:text-green-600 dark:hover:text-green-400 transition">

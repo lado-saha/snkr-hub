@@ -1,5 +1,5 @@
 import logo from "./logo.png";
-import gif from "./logo-white.gif";
+import gif from "./logo-white.png";
 
 export { logo, gif };
 

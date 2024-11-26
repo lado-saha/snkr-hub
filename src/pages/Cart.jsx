@@ -17,6 +17,7 @@ const Cart = () => {
       cart.reduce((acc, curr) => acc + curr.retail_price_cents * curr.qty, 0)
     );
   }, [cart]);
+  console.log(cart)
 
   const checkout = () => {
     toast.success("Order Placed Successfully");
@@ -30,7 +31,8 @@ const Cart = () => {
         <div className="w-full min-h-screen flex my-[100px] mx-[30px] md:mx-[100px]">
           <div className="flex flex-col lg:flex-row gap-x-6">
             <div className="">
-              {cart.map((cartItem) => (
+               {cart.map((cartItem) => ( 
+
                 <CartCard key={cartItem.id} item={cartItem} />
               ))}
             </div>
@@ -57,7 +59,7 @@ const Cart = () => {
                     TOTAL ITEMS : {cart.length}
                   </h1>
                   <h1 className="text-xl dark:text-white md:text-5xl font-bold text-slate-500">
-                    TOTAL PRICE : ₹ {total}
+                    TOTAL PRICE :  {total} FCFA
                   </h1>
                 </div>
                 <div>

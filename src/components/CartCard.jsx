@@ -32,41 +32,41 @@ const CartCard = ({ item }) => {
         <div className="">
           <div>
             <img
-              src={item.original_picture_url}
-              alt=""
+              src={item.imageUrl || "https://via.placeholder.com/350"}
+              alt={item.name}
               width={150}
               height={150}
             />
           </div>
-          <div className="flex  justify-between dark:text-white">
+          <div className="flex justify-between dark:text-white">
             <div className="flex flex-col ml-[20px] gap-y-2 overflow-y-hidden">
               <div className="text-xs font-bold tracking-normal mr-1 md:text-sm sm:block">
-                {item.story_html.split(" ").slice(0, 28).join(" ") + "..."}
+                {item.description}
               </div>
 
               <div className="flex justify-evenly gap-x-8 mt-2 md:gap-x-0 md:justify-evenly">
                 <div className="mt-[10px] font-bold">
-                  ₹ {item.retail_price_cents}
+                  {Math.ceil((item.price / 100) * 10000)} FCFA
                 </div>
                 <div>
                   <div className="flex gap-x-6">
                     <p className="flex ">
                       <button
                         className="p-1 mr-2 bg-[#dadada] dark:bg-[#2a2a2a] dark:hover:bg-black dark:border-none border rounded-lg font-bold w-[30px]"
-                        onClick={() => decrease(item.id)}
+                        onClick={() => decrease(item.sku)}
                       >
                         -
                       </button>
                       <span className="text-lg font-bold">{item.qty}</span>
                       <button
                         className="p-1 ml-2 bg-[#dadada] dark:bg-[#2a2a2a] dark:hover:bg-black dark:border-none border rounded-lg font-bold w-[30px]"
-                        onClick={() => increase(item.id)}
+                        onClick={() => increase(item.sku)}
                       >
                         +
                       </button>
                     </p>
                     <div className="text-red-800  bg-red-200 group hover:bg-red-400 transition-transform duration-300 cursor-pointer rounded-full p-2 ml-2">
-                      <AiFillDelete onClick={() => remove(item.id)} />
+                      <AiFillDelete onClick={() => remove(item)} />
                     </div>
                   </div>
                 </div>

@@ -30,15 +30,15 @@ export const navLinks = [
 
 export const shoes = [
   {
-    thumbnail: thumbnailShoe1,
+    thumbnail: bigShoe1,
     bigShoe: bigShoe1,
   },
   {
-    thumbnail: thumbnailShoe2,
+    thumbnail: bigShoe2,
     bigShoe: bigShoe2,
   },
   {
-    thumbnail: thumbnailShoe3,
+    thumbnail: bigShoe3,
     bigShoe: bigShoe3,
   },
 ];
@@ -95,12 +95,12 @@ export const footerLinks = [
   {
     title: "Categories",
     links: [
-      { name: "Air Force 1", link: "/" },
-      { name: "Air Max 1", link: "/" },
-      { name: "Air Jordan 1", link: "/" },
-      { name: "Air Force 2", link: "/" },
-      { name: "Nike Waffle Racer", link: "/" },
-      { name: "Nike Cortez", link: "/" },
+      { name: "Tools", link: "/" },
+      { name: "Building Materials", link: "/" },
+      { name: "Paint & Finishes", link: "/" },
+      { name: "Electrical Supplies", link: "/" },
+      { name: "Plumbing", link: "/" },
+      { name: "Gardening", link: "/" },
     ],
   },
   {
@@ -116,11 +116,12 @@ export const footerLinks = [
   {
     title: "Get in touch",
     links: [
-      { name: "customer@nike.com", link: "mailto:customer@nike.com" },
-      { name: "+92554862354", link: "tel:+92554862354" },
+      { name: "support@bricostore.com", link: "mailto:support@quincaillerie.com" },
+      { name: "+1234567890", link: "tel:+1234567890" },
     ],
   },
 ];
+
 
 export const socialMedia = [
   { src: facebook, alt: "facebook logo" },
